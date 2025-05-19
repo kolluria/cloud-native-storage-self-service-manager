@@ -65,13 +65,13 @@ spec:
       served: true
       storage: true
       subresources:
-        status: {}
+        status: { }
 status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: []
-  storedVersions: []
+  conditions: [ ]
+  storedVersions: [ ]
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -89,73 +89,73 @@ spec:
     singular: volumemigrationjob
   scope: Namespaced
   versions:
-  - name: v1alpha1
-    schema:
-      openAPIV3Schema:
-        description: VolumeMigrationJob is the Schema for the volumemigrationjob API
-        properties:
-          apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+    - name: v1alpha1
+      schema:
+        openAPIV3Schema:
+          description: VolumeMigrationJob is the Schema for the volumemigrationjob API
+          properties:
+            apiVersion:
+              description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
               internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-            type: string
-          kind:
-            description: 'Kind is a string value representing the REST resource this
+              type: string
+            kind:
+              description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-            type: string
-          metadata:
-            type: object
-          spec:
-            description: VolumeMigrationJobSpec defines the desired state of VolumeMigrationJob.
-            properties:
-              sourceDatastore:
-                description: SourceDatastore refers to the datastore from which volumes are being migrated.
-                type: string
-              targetDatastore:
-                description: TargetDatastore refers to the datastore to which volumes are being migrated.
-                type: string
-              datacenter:
-                description: Datacenter is the datacenter in which datastores are located.
-                type: string
-              volumesToMigrate:
-                description: List of volumes that need to be migrated.
-                items:
+              type: string
+            metadata:
+              type: object
+            spec:
+              description: VolumeMigrationJobSpec defines the desired state of VolumeMigrationJob.
+              properties:
+                sourceDatastore:
+                  description: SourceDatastore refers to the datastore from which volumes are being migrated.
                   type: string
-                type: array
-            required:
-            - targetDatastore
-            - datacenter
-            type: object
-          status:
-            description: VolumeMigrationJobStatus defines the observed state of VolumeMigrationJob.
-            properties:
-              overallPhase:
-                description: Overall phase of the submitted job.
-                type: string
-              startTime:
-                description: Time at which the job started processing.
-                format: date-time
-                type: string
-              endTime:
-                description: Time at which the job completed processing.
-                format: date-time
-                type: string
-              migrationTasks:
-                description: List of names of volume migration tasks submitted.
-                items:
+                targetDatastore:
+                  description: TargetDatastore refers to the datastore to which volumes are being migrated.
                   type: string
-                type: array
-            type: object
-        type: object
-    served: true
-    storage: true
+                datacenter:
+                  description: Datacenter is the datacenter in which datastores are located.
+                  type: string
+                volumesToMigrate:
+                  description: List of volumes that need to be migrated.
+                  items:
+                    type: string
+                  type: array
+              required:
+                - targetDatastore
+                - datacenter
+              type: object
+            status:
+              description: VolumeMigrationJobStatus defines the observed state of VolumeMigrationJob.
+              properties:
+                overallPhase:
+                  description: Overall phase of the submitted job.
+                  type: string
+                startTime:
+                  description: Time at which the job started processing.
+                  format: date-time
+                  type: string
+                endTime:
+                  description: Time at which the job completed processing.
+                  format: date-time
+                  type: string
+                migrationTasks:
+                  description: List of names of volume migration tasks submitted.
+                  items:
+                    type: string
+                  type: array
+              type: object
+          type: object
+      served: true
+      storage: true
 status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: []
-  storedVersions: []
+  conditions: [ ]
+  storedVersions: [ ]
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -173,70 +173,70 @@ spec:
     singular: volumemigrationtask
   scope: Namespaced
   versions:
-  - name: v1alpha1
-    schema:
-      openAPIV3Schema:
-        description: VolumeMigrationTask is the Schema for the volumemigrationtask API
-        properties:
-          apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+    - name: v1alpha1
+      schema:
+        openAPIV3Schema:
+          description: VolumeMigrationTask is the Schema for the volumemigrationtask API
+          properties:
+            apiVersion:
+              description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
               internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-            type: string
-          kind:
-            description: 'Kind is a string value representing the REST resource this
+              type: string
+            kind:
+              description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-            type: string
-          metadata:
-            type: object
-          spec:
-            description: VolumeMigrationTaskSpec defines the desired state of VolumeMigrationTask.
-            properties:
-              fcdId:
-                description: FcdId refers to the fcd being migrated
-                type: string
-              targetDatastore:
-                description: TargetDatastore refers to the datastore to which volume is being migrated.
-                type: string
-              datacenter:
-                description: Datacenter is the datacenter in which datastores are located.
-                type: string
-            required:
-            - fcdId
-            - targetDatastore
-            - datacenter
-            type: object
-          status:
-            description: VolumeMigrationTaskStatus defines the observed state of VolumeMigrationTask.
-            properties:
-              startTime:
-                description: Invocation time of the task.
-                format: date-time
-                type: string
-              endTime:
-                description: Time at which the task finished processing.
-                format: date-time
-                type: string
-              phase:
-                description: Current phase of the submitted task.
-                type: string
-              cnsTaskId:
-                description: Id of the task submitted to CNS.
-                type: string
-              error:
-                description: Any error on the task.
-                type: string
-            type: object
-        type: object
-    served: true
-    storage: true
+              type: string
+            metadata:
+              type: object
+            spec:
+              description: VolumeMigrationTaskSpec defines the desired state of VolumeMigrationTask.
+              properties:
+                fcdId:
+                  description: FcdId refers to the fcd being migrated
+                  type: string
+                targetDatastore:
+                  description: TargetDatastore refers to the datastore to which volume is being migrated.
+                  type: string
+                datacenter:
+                  description: Datacenter is the datacenter in which datastores are located.
+                  type: string
+              required:
+                - fcdId
+                - targetDatastore
+                - datacenter
+              type: object
+            status:
+              description: VolumeMigrationTaskStatus defines the observed state of VolumeMigrationTask.
+              properties:
+                startTime:
+                  description: Invocation time of the task.
+                  format: date-time
+                  type: string
+                endTime:
+                  description: Time at which the task finished processing.
+                  format: date-time
+                  type: string
+                phase:
+                  description: Current phase of the submitted task.
+                  type: string
+                cnsTaskId:
+                  description: Id of the task submitted to CNS.
+                  type: string
+                error:
+                  description: Any error on the task.
+                  type: string
+              type: object
+          type: object
+      served: true
+      storage: true
 status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: []
-  storedVersions: []
+  conditions: [ ]
+  storedVersions: [ ]
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -253,79 +253,79 @@ spec:
     singular: snapshotdeletionjob
   scope: Namespaced
   versions:
-  - name: v1alpha1
-    schema:
-      openAPIV3Schema:
-        description: SnapshotDeletionJob is the Schema for the snapshotdeletionjobs
-          API
-        properties:
-          apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+    - name: v1alpha1
+      schema:
+        openAPIV3Schema:
+          description: SnapshotDeletionJob is the Schema for the snapshotdeletionjobs
+            API
+          properties:
+            apiVersion:
+              description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
               internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-            type: string
-          kind:
-            description: 'Kind is a string value representing the REST resource this
+              type: string
+            kind:
+              description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-            type: string
-          metadata:
-            type: object
-          spec:
-            description: SnapshotDeletionJobSpec defines the desired state of SnapshotDeletionJob
-            properties:
-              datacenter:
-                description: Datacenter refers to the datacenter the snapshot belongs to.
-                type: string
-              datastores:
-                description: Datastores refer to the datastores to which snapshots
-                  belong.
-                items:
+              type: string
+            metadata:
+              type: object
+            spec:
+              description: SnapshotDeletionJobSpec defines the desired state of SnapshotDeletionJob
+              properties:
+                datacenter:
+                  description: Datacenter refers to the datacenter the snapshot belongs to.
                   type: string
-                type: array
-              fcdId:
-                description: FcdId refers to the Id of FCD
-                type: string
-              snapshotPrefix:
-                default: snapshot
-                description: SnapshotPrefix is the prefix used in the snapshot name.
-                type: string
-              snapshotId:
-                description: SnapshotId refers to Id of the snapshot
-                type: string
-            required:
-            - snapshotPrefix
-            type: object
-          status:
-            description: SnapshotDeletionJobStatus defines the observed state of SnapshotDeletionJob
-            properties:
-              endTime:
-                description: End time of the snapshot deletion job
-                format: date-time
-                type: string
-              overallPhase:
-                description: Overall phase of the snapshot deletion job
-                type: string
-              snapshotDeletionTasks:
-                description: Name of snapshotdeletiontask instances created for each
-                  snapshot.
-                items:
+                datastores:
+                  description: Datastores refer to the datastores to which snapshots
+                    belong.
+                  items:
+                    type: string
+                  type: array
+                fcdId:
+                  description: FcdId refers to the Id of FCD
                   type: string
-                type: array
-              startTime:
-                description: Start time of the snapshot deletion job
-                format: date-time
-                type: string
-            type: object
-        type: object
-    served: true
-    storage: true
+                snapshotPrefix:
+                  default: snapshot
+                  description: SnapshotPrefix is the prefix used in the snapshot name.
+                  type: string
+                snapshotId:
+                  description: SnapshotId refers to Id of the snapshot
+                  type: string
+              required:
+                - snapshotPrefix
+              type: object
+            status:
+              description: SnapshotDeletionJobStatus defines the observed state of SnapshotDeletionJob
+              properties:
+                endTime:
+                  description: End time of the snapshot deletion job
+                  format: date-time
+                  type: string
+                overallPhase:
+                  description: Overall phase of the snapshot deletion job
+                  type: string
+                snapshotDeletionTasks:
+                  description: Name of snapshotdeletiontask instances created for each
+                    snapshot.
+                  items:
+                    type: string
+                  type: array
+                startTime:
+                  description: Start time of the snapshot deletion job
+                  format: date-time
+                  type: string
+              type: object
+          type: object
+      served: true
+      storage: true
 status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: []
-  storedVersions: []
+  conditions: [ ]
+  storedVersions: [ ]
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -342,80 +342,80 @@ spec:
     singular: snapshotdeletiontask
   scope: Namespaced
   versions:
-  - name: v1alpha1
-    schema:
-      openAPIV3Schema:
-        description: SnapshotDeletionTask is the Schema for the snapshotdeletiontasks
-          API
-        properties:
-          apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+    - name: v1alpha1
+      schema:
+        openAPIV3Schema:
+          description: SnapshotDeletionTask is the Schema for the snapshotdeletiontasks
+            API
+          properties:
+            apiVersion:
+              description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
               internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-            type: string
-          kind:
-            description: 'Kind is a string value representing the REST resource this
+              type: string
+            kind:
+              description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-            type: string
-          metadata:
-            type: object
-          spec:
-            description: SnapshotDeletionTaskSpec defines the desired state of SnapshotDeletionTask
-            properties:
-              datacenter:
-                description: Datacenter refers to the datacenter the snapshot belongs to
-                type: string
-              datastore:
-                description: Datastore refers to the datastore to which snapshot belongs
-                type: string
-              fcdId:
-                description: FcdId refers to Id of FCD
-                type: string
-              snapshotId:
-                description: SnapshotId refers to Id of the snapshot
-                type: string
-            required:
-            - datacenter
-            - datastore
-            - fcdId
-            - snapshotId
-            type: object
-          status:
-            description: SnapshotDeletionTaskStatus defines the observed state of
-              SnapshotDeletionTask
-            properties:
-              cnsTaskId:
-                description: CnsTaskID refers to the task ID in CNS for snapshot deletion
-                type: string
-              endTime:
-                description: Time at which the task finished processing.
-                format: date-time
-                type: string
-              error:
-                description: Error indicates any error while running the task
-                type: string
-              phase:
-                description: Phase describes the current phase of the task
-                type: string
-              snapshotDescription:
-                description: SnapshotDescription refers to the description of the
-                  snapshot.
-                type: string
-              startTime:
-                description: The timestamp at which the task was invoked
-                format: date-time
-                type: string
-            type: object
-        type: object
-    served: true
-    storage: true
+              type: string
+            metadata:
+              type: object
+            spec:
+              description: SnapshotDeletionTaskSpec defines the desired state of SnapshotDeletionTask
+              properties:
+                datacenter:
+                  description: Datacenter refers to the datacenter the snapshot belongs to
+                  type: string
+                datastore:
+                  description: Datastore refers to the datastore to which snapshot belongs
+                  type: string
+                fcdId:
+                  description: FcdId refers to Id of FCD
+                  type: string
+                snapshotId:
+                  description: SnapshotId refers to Id of the snapshot
+                  type: string
+              required:
+                - datacenter
+                - datastore
+                - fcdId
+                - snapshotId
+              type: object
+            status:
+              description: SnapshotDeletionTaskStatus defines the observed state of
+                SnapshotDeletionTask
+              properties:
+                cnsTaskId:
+                  description: CnsTaskID refers to the task ID in CNS for snapshot deletion
+                  type: string
+                endTime:
+                  description: Time at which the task finished processing.
+                  format: date-time
+                  type: string
+                error:
+                  description: Error indicates any error while running the task
+                  type: string
+                phase:
+                  description: Phase describes the current phase of the task
+                  type: string
+                snapshotDescription:
+                  description: SnapshotDescription refers to the description of the
+                    snapshot.
+                  type: string
+                startTime:
+                  description: The timestamp at which the task was invoked
+                  format: date-time
+                  type: string
+              type: object
+          type: object
+      served: true
+      storage: true
 status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: []
-  storedVersions: []
+  conditions: [ ]
+  storedVersions: [ ]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -462,7 +462,7 @@ rules:
   - apiGroups:
       - ""
     resources:
-      - secrets 
+      - secrets
     verbs:
       - get
       - list
@@ -487,9 +487,11 @@ metadata:
   name: cnsmanager-config
 data:
   config.json: |
-    { 
+    {
       "auth-type": "%AUTH_TYPE%",
-      "snapshot-prefixes": ["snapshot", "AstrolabeSnapshot"],
+      "snapshot-prefixes": [
+        "snapshot",
+        "AstrolabeSnapshot"],
       "auto-delete-ov": "disable",
       "monitor-orphan-snapshots": true,
       "auto-delete-orphan-snapshots": false,
@@ -520,7 +522,7 @@ spec:
       labels:
         app: cns-manager
     spec:
-      serviceAccount: cns-manager
+      serviceAccountName: cns-manager
       containers:
         - name: nginx-proxy
           # Same dockerhub copy hosted at nginxinc/nginx-unprivileged:1.25.3
@@ -542,7 +544,7 @@ spec:
             - name: basicauth-creds
               mountPath: /etc/nginx/basicauth_creds
               subPath: basicauth_creds
-          #uncomment below volume mount if tls is enabled.
+            #uncomment below volume mount if tls is enabled.
             #- name: cnsmanager-tls
             #  mountPath:	/etc/nginx/tls
             #  readOnly: true
@@ -608,32 +610,3 @@ spec:
         #- name: cnsmanager-tls
         #  secret:	
         #    secretName: cnsmanager-tls
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: cns-manager
-  namespace: cns-manager
-  labels:
-    app: cns-manager
-spec:
-  type: NodePort
-  ports:
-    - name: http
-      port: 80
-      protocol: TCP
-      targetPort: 8081
-      nodePort: 30008
-    - name: https
-      port: 443
-      protocol: TCP
-      targetPort: 443
-      nodePort: 30009
-    - name: prometheus
-      port: 2114
-      protocol: TCP
-      targetPort: 2114
-      nodePort: 30010
-  selector:
-    app: cns-manager
-  sessionAffinity: None
