@@ -12,30 +12,29 @@ Also if you want CNS manager to be highly available, deploy it on a Kubernetes c
 ### Networking
 https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere-supervisor/8-0/vsphere-supervisor-concepts-and-planning/supervisor-architecture-and-components/supervisor-networking.html
 
-Note : To deploy CNS manager from this repo, you can clone it on your machine and then set kubeconfig to point to the remote Kubernetes cluster where CNS manager needs to be deployed. Then follow the instructions for deployment.
+**Note** : To deploy CNS manager from this repo, you can either clone it on your machine or download it as a zip file, and then set kubeconfig to point to the remote Kubernetes cluster where CNS manager needs to be deployed. Then follow the instructions for deployment.
 
-The deployment is supported with two authentication mechanisms to limit who can access CNS manager APIs:
-1. Basic Auth - The CNS manager admin can choose fixed credentials at the time of deployment. This auth mechanism is less secure than OAuth2 to be used in Production. Nevertheless, it can be used for a quick deployment to test the application and in air-gapped environments where the vCenter is not connected to the internet.
+### Authentication mechanisms
+**Basic Auth** - The CNS manager admin can choose fixed credentials at the time of deployment. This auth mechanism is less secure than OAuth2 to be used in Production. Nevertheless, it can be used for a quick deployment and in air-gapped environments where the vCenter is not connected to the internet.
 See these [instructions](docs/book/deployment/basicauth.md) for basic auth deployment.
 
-2. OAuth2 - With OAuth2, the authentication is delegated to an OIDC provider such as Gitlab, Github, Google etc. It does require creating an OAuth application on the OIDC provider before deploying CNS manager.  
-See these [instructions](docs/book/deployment/oauth2.md) for OAuth2 deployment.
+**Note:** Although OAuth2 is supported for vanilla deployments, it is unsupported for WCP as it requires opening the network to outside, which violates the Supervisor network policy.
 
 ## Enabling TLS for your deployment
 You can enable TLS for your CNS Manager deployment with a few tweaks, so that the communication is encrypted between client(a browser, for instance) and the application.  
-See these [deployment changes](docs/book/deployment/tls-enable.md) to enable TLS on CNS Manager. It can be done for both basicauth & OAuth2 deployments, and assumes you have the TLS key and certificate generated.
+See these [deployment changes](docs/book/deployment/tls-enable.md) to enable TLS on CNS Manager. It assumes you have the TLS key and certificate generated.
 
 ## Register Kubernetes clusters before you start!
 CNS manager relies on communicating with Kubernetes clusters for several functionalities it offers. It is therefore a pre-requisite to register all Kubernetes clusters in vCenter with CNS manager.  
 
-Note: CNS manager can support upto 32 Kubernetes clusters per vCenter. Please see [supported scale](docs/book/supported_scale.md) for any recommended configurations for CNS manager.
+**Note**: CNS manager can support upto 32 Kubernetes clusters per vCenter. Please see [supported scale](docs/book/supported_scale.md) for any recommended configurations for CNS manager.
 
 The following section explains how to register a Kubernetes cluster with CNS manager. These steps are applicable to all Kubernetes clusters in the vCenter.
 
 **1. Generate a kubeconfig with minimal privileges for CNS manager:**  
 * The provided script `scripts/get-kubeconfig.sh` generates a kubeconfig for CNS manager with minimal privileges required for its functioning. But if you're fine with providing admin kubeconfig for the cluster to be registered, you can skip kubeconfig generation part mentioned below and directly jump to cluster registration part.  
 
-Note : The script may not work on all Kubernetes distributions if they don't adhere to the [recommended steps](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/container-storage-plugin/3-0/getting-started-with-vmware-vsphere-container-storage-plug-in-3-0.html) for deploying vSphere CSI driver.
+    **Note** : The script may not work on all Kubernetes distributions if they don't adhere to the [recommended steps](https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/container-storage-plugin/3-0/getting-started-with-vmware-vsphere-container-storage-plug-in-3-0.html) for deploying vSphere CSI driver.
 
 * The script takes 2 mandatory input parameters. First is the path to the cluster's kubeconfig file and the second is the name of the file where the generated kubeconfig file with minimal privileges should be stored. Here is how you can run the script:
 ```
@@ -56,7 +55,7 @@ curl -X 'POST' "http://CNS-MANAGER-ENDPOINT/1.0.0/registercluster?csiDriverSecre
 ```
 * Once the cluster is registered, you may delete this file from the machine.
 
-**Note**: If a registered cluster later gets decommissioned or deleted from the vCenter, don't forget to deregister it from CNS manager as well. This will ensure a smooth execution of functionalities offered through CNS manager.
+    **Note**: If a registered cluster later gets decommissioned or deleted from the vCenter, don't forget to deregister it from CNS manager as well. This will ensure a smooth execution of functionalities offered through CNS manager.
 
 ## Functionalities currently offered through cns-manager
 

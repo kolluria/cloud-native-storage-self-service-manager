@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ $# -lt 5 ]
+if [ $# -lt 4 ]
 then
-	echo "./deploy.sh <namespace> <SV kubeconfig file> <VC creds file> <basicauth|oauth2> <(tls flag)true|false>
+	echo "./deploy.sh <namespace> <SV kubeconfig file> <VC creds file> <(tls flag)true|false>
 	<BasicAuth Username(required with basicauth)> <BasicAuth Password(required with basicauth)>
 	<path-to-tls.key(required if tls enabled)> <path-to-tls.pem(required if tls enabled)>"
 	exit 1
@@ -11,32 +11,14 @@ fi
 NAMESPACE=$1
 SV_KUBECONFIG_FILE=$2
 VC_CREDS_FILE=$3
-AUTH_MECHANISM=$4
-TLS_FLAG=$5
+TLS_FLAG=$4
+BASICAUTH_USERNAME=$5
+BASICAUTH_PASSWORD=$6
 
-if ! [ "$AUTH_MECHANISM" == "basicauth" ] && ! [ "$AUTH_MECHANISM" == "oauth2" ]
+if [ "$TLS_FLAG" == "true" ]
 then
-	echo "Auth mechanism needs to be either basicauth or oauth2."
-	exit 1
-fi
-
-# Set variables depending on the values of auth mechanism and tls flag.
-if [ "$AUTH_MECHANISM" == "basicauth" ]
-then
-	BASICAUTH_USERNAME=$6
-	BASICAUTH_PASSWORD=$7
-
-	if [ "$TLS_FLAG" == "true" ]
-	then
-		TLS_KEY=$8
-		TLS_CERT=$9
-	fi
-else
-	if [ "$TLS_FLAG" == "true" ]
-	then
-		TLS_KEY=$6
-		TLS_CERT=$7
-	fi
+		TLS_KEY=$7
+		TLS_CERT=$8
 fi
 
 # Create a secret that has SV cluster's admin kubeconfig.
@@ -57,26 +39,17 @@ then
 	exit 1
 fi
 
-# If auth mechanism is basicauth, create a secret that has basic auth credentials hashed using SHA512
-# password algorithm. Create a temp file with credentials and remove it after creating the secret.
-if [ "$AUTH_MECHANISM" == "basicauth" ]
+MANIFEST_FOLDER="basic-auth"
+echo -n "$BASICAUTH_USERNAME": >> basicauth_creds
+# `-6` specifies SHA512 password algorithm
+openssl passwd -6 "$BASICAUTH_PASSWORD" >> basicauth_creds
+kubectl -n "$NAMESPACE" create secret generic basicauth-creds --from-file=basicauth_creds
+if [ $? -ne 0 ]
 then
-    # Assign manifest folder
-    MANIFEST_FOLDER="basic-auth"
-    echo -n "$BASICAUTH_USERNAME": >> basicauth_creds
-    # `-6` specifies SHA512 password algorithm
-    openssl passwd -6 "$BASICAUTH_PASSWORD" >> basicauth_creds
-    kubectl -n "$NAMESPACE" create secret generic basicauth-creds --from-file=basicauth_creds
-    if [ $? -ne 0 ]
-    then
-        echo "Failed to create basicauth-creds secret."
-        exit 1
-    fi
-    rm basicauth_creds
-else
-    # Assign manifest folder
-    MANIFEST_FOLDER="oauth2"
+  echo "Failed to create basicauth-creds secret."
+      exit 1
 fi
+rm basicauth_creds
 
 # Create a config map for nginx-conf
 kubectl -n "$NAMESPACE" create configmap nginx-conf --from-file=$MANIFEST_FOLDER/nginx.conf
