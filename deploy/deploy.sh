@@ -3,8 +3,7 @@
 if [ $# -lt 4 ]
 then
 	echo "./deploy.sh <namespace> <SV kubeconfig file> <VC creds file> <(tls flag)true|false>
-	<BasicAuth Username(required with basicauth)> <BasicAuth Password(required with basicauth)>
-	<path-to-tls.key(required if tls enabled)> <path-to-tls.pem(required if tls enabled)>"
+	<Username> <Password> <path-to-tls.key(required if tls enabled)> <path-to-tls.pem(required if tls enabled)>"
 	exit 1
 fi
 
